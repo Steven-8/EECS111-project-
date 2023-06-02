@@ -15,40 +15,48 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 struct timeval t_global_start;
 Restroom restroom;
 
-
 int main(int argc, char **argv)
 {
-    if (argc != 2)
-    {
-        // Print error message and usage example
-        printf("[ERROR] Expected 1 argument, but got %d\n", argc - 1);
-        printf("[USAGE] %s <number>\n", argv[0]);
-        return 1; // Exit the program with an error status
-    }
+	if (argc != 2)
+	{
+		// Print error message and usage example
+		printf("[ERROR] Expected 1 argument, but got %d\n", argc - 1);
+		printf("[USAGE] %s <number>\n", argv[0]);
+		return 1; // Exit the program with an error status
+	}
 
-    // This is to set the global start time
-    gettimeofday(&t_global_start, NULL);
+	// This is to set the global start time
+	gettimeofday(&t_global_start, NULL);
+	srand(time(NULL));
 
-    int *num_persons_ptr = static_cast<int *>(malloc(sizeof(int)));
-    *num_persons_ptr = atoi(argv[1]);
+	int *num_persons_ptr = static_cast<int *>(malloc(sizeof(int)));
+	*num_persons_ptr = atoi(argv[1]);
 
-    pthread_t tid_input;
+	pthread_t tid_input, tid_queue;
 
-    if (pthread_create(&tid_input, NULL, input_thread, num_persons_ptr) != 0)
-    {
-        fprintf(stderr, "Error creating input thread\n");
-        return 1;
-    }
+	if (pthread_create(&tid_input, NULL, input_thread, num_persons_ptr) != 0)
+	{
+		fprintf(stderr, "Error creating input thread\n");
+		return 1;
+	}
+	if (pthread_create(&tid_queue, NULL, queue_thread, NULL))
+	{
+		fprintf(stderr, "Error creating queue thread\n");
+	}
 
-    if (pthread_join(tid_input, NULL) != 0)
-    {
-        fprintf(stderr, "Error joining input thread\n");
-        return 1;
-    }
+	if (pthread_join(tid_input, NULL) != 0)
+	{
+		fprintf(stderr, "Error joining input thread\n");
+		return 1;
+	}
+	if (pthread_join(tid_queue, NULL))
+	{
+		fprintf(stderr, "Error joining queue thread\n");
+	}
 
-    free(num_persons_ptr);
+	free(num_persons_ptr);
 
-    return 0;
+	return 0;
 
 	/* 	if (pthread_create(&tid_queue, NULL, queue_thread, NULL))
 		{

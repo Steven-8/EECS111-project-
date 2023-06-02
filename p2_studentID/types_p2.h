@@ -22,7 +22,7 @@ class Person
 	struct timeval t_create;
 	struct timeval t_start;
 	struct timeval t_end;
-	long time_to_stay_ms;
+	int time_to_stay_ms;
 	
 	pthread_t tid;
 
@@ -42,6 +42,7 @@ public:
 	unsigned long get_use_order(void);
 
 	void set_time(long data);
+	int get_time(void);
 	int ready_to_leave(void);
 
 	void start(void);
@@ -80,7 +81,7 @@ public:
 	void print_status(void);
 	void add_person(Person &p);
 	void remove_person(int);
-
+	std::vector<Person>& get_queue(void);
 	// Call by reference
 	// This is just an example. You can implement any function you need
 	int get_status(void);

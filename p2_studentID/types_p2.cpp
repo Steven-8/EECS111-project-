@@ -11,6 +11,10 @@ void Person::set_use_order(unsigned long data) { use_order = data; }
 unsigned long Person::get_use_order(void) { return use_order; }
 
 void Person::set_time(long data) { time_to_stay_ms = data; }
+int Person::get_time(void){
+	return time_to_stay_ms;
+}
+
 int Person::ready_to_leave(void)
 {
 	struct timeval t_curr;
@@ -80,19 +84,12 @@ void Restroom::enter_restroom(Person &p)
 {
 	if (p.get_gender() == 0)
 	{
-		women_present++;
 		status = WOMENPRESENT;
 	}
 	else
 	{
-		men_present++;
 		status = MENPRESENT;
 	}
-
-	printf("[Restroom] (%s) goes into the restroom, State is (%s): Total: %d (Men: %d, Women: %d)\n",
-		   (p.get_gender() == 0) ? "Man" : "Woman",
-		   (status == MENPRESENT) ? "MenPresent" : "WomenPresent",
-		   men_present + women_present, men_present, women_present);
 }
 
 void Restroom::leave_restroom(Person &p)
@@ -111,35 +108,36 @@ void Restroom::leave_restroom(Person &p)
 		status = EMPTY;
 	}
 
-	printf("[Restroom] (%s) left the restroom. Status is changed, Status is (empty): Total: %d (Men: %d, Women: %d)\n",
-		   (p.get_gender() == 0) ? "Man" : "Woman",
-		   men_present + women_present, men_present, women_present);
 }
 
 void Restroom::remove_person(int gender)
 {
-    if (!queue.empty())
-    {
-        for (std::vector<Person>::iterator it = queue.begin(); it != queue.end(); ++it)
-        {
-            if (it->get_gender() == gender)
-            {
-                queue.erase(it);
-                break;
-            }
-        }
-    }
+	if (!queue.empty())
+	{
+		for (std::vector<Person>::iterator it = queue.begin(); it != queue.end(); ++it)
+		{
+			if (it->get_gender() == gender)
+			{
+				queue.erase(it);
+				break;
+			}
+		}
+	}
 }
 
 void Restroom::add_person(Person &p)
 {
-  /*   if (p.get_gender() == 0)
-    {
-        printf("[%02lu ms][Input] A person (Man) goes into the queue\n", get_elasped_time(t_global_start, p.get_t_create()));
-    }
-    else
-    {
-        printf("[%02lu ms][Input] A person (Woman) goes into the queue\n", get_elasped_time(t_global_start, p.get_t_create()));
-    } */
-    queue.push_back(p);
+	if (p.get_gender() == 0)
+	{
+		women_present++;
+	}
+	else
+	{
+		men_present++;
+	}
+	queue.push_back(p);
+}
+std::vector<Person> &Restroom::get_queue(void)
+{
+	return this->queue;
 }
