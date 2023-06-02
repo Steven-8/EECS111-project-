@@ -80,15 +80,27 @@ int Restroom::get_womenPresent(void)
 	return this->women_present;
 }
 
+int Restroom::get_men_in_queue(void)
+{
+	return this->men_in_queue;
+}
+
+int Restroom::get_women_in_queue(void)
+{
+	return this->women_in_queue;
+}
+
 void Restroom::enter_restroom(Person &p)
 {
 	if (p.get_gender() == 0)
 	{
-		status = WOMENPRESENT;
+		men_present ++;
+		status = MENPRESENT;
 	}
 	else
 	{
-		status = MENPRESENT;
+		women_present ++;
+		status = WOMENPRESENT;
 	}
 }
 
@@ -110,7 +122,7 @@ void Restroom::leave_restroom(Person &p)
 
 }
 
-void Restroom::remove_person(int gender)
+/* void Restroom::remove_person(int gender)
 {
 	if (!queue.empty())
 	{
@@ -123,21 +135,35 @@ void Restroom::remove_person(int gender)
 			}
 		}
 	}
-}
+} */
 
-void Restroom::add_person(Person &p)
+/* void Restroom::enter_queue(Person &p)
 {
 	if (p.get_gender() == 0)
 	{
-		women_present++;
+		men_in_queue++;
 	}
 	else
 	{
-		men_present++;
+		women_in_queue++;
 	}
 	queue.push_back(p);
+} */
+
+/* void Restroom::leave_queue(Person &p)
+{
+	if (p.get_gender() == 0)
+	{
+		men_in_queue--;
+	}
+	else
+	{
+		women_in_queue--;
+	}
+	queue.erase(queue.begin());
 }
+
 std::vector<Person> &Restroom::get_queue(void)
 {
 	return this->queue;
-}
+} */

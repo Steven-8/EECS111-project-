@@ -60,7 +60,9 @@ class Restroom {
 	int status; // 0 - Empty, 1 - WomenPresent, 2 - MenPresent
 	int men_present;
 	int women_present;
-	std::vector<Person> queue;
+	//std::vector<Person> queue;
+	int men_in_queue;
+	int women_in_queue;
 	unsigned long order_counter;
 	// You need to define the data structure to
     // save the information of people using the restroom
@@ -79,7 +81,8 @@ public:
 	void enter_restroom(Person &p);
 	void leave_restroom(Person &p);
 	void print_status(void);
-	void add_person(Person &p);
+	void enter_queue(Person &p);
+	void leave_queue(Person &p);
 	void remove_person(int);
 	std::vector<Person>& get_queue(void);
 	// Call by reference
@@ -88,6 +91,8 @@ public:
 	void set_status(int status);
 	int get_womenPresent(void);
 	int get_menPresent(void);
+	int get_women_in_queue(void);
+	int get_men_in_queue(void);
 	unsigned long get_next_order() {return order_counter++;};
 };
 

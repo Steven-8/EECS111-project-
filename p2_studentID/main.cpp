@@ -9,11 +9,14 @@
 #include "types_p2.h"
 #include "p2_threads.h"
 #include "utils.h"
+#include <queue>
 
 pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 struct timeval t_global_start;
 Restroom restroom;
+std::queue<Person> man_queue;
+std::queue<Person> woman_queue;
 
 int main(int argc, char **argv)
 {
